@@ -70,9 +70,9 @@ def ejercicios_mysql():
             return {'Error': error_message}, 500
         finally:
             DatabaseConnection.close_connection()
-    # que devuelva un par de llaves vacias
-    @app.route('/updproduct')
-    def update_product():
+
+    @app.route('/addproduct', methods=['POST'])
+    def add_product():
         try:
             query = """INSERT INTO production.products (product_name, brand_id, category_id, model_year, list_price)
             VALUES (%s, %s, %s, %s, %s);"""
@@ -89,6 +89,42 @@ def ejercicios_mysql():
             return {}, 201
         except:
             return {'Error': 'Ha ocurrido un error'}
+        finally:
+            DatabaseConnection.close_connection()
+
+    @app.route('/updproduct/<int:product_id>', methods=['PUT'])
+    def update_product(product_id):
+        try:
+            update_values = []
+
+            product_name = request.args.get('product_name', '')
+            brand_id = request.args.get('brand_id', '')
+            category_id = request.args.get('category_id', '')
+            model_year = request.args.get('model_year', '')
+            list_price = request.args.get('list_price', '')
+
+            if product_name:
+                update_values.append(f"product_name = '{product_name}'")
+            if brand_id:
+                update_values.append(f"brand_id = {int(brand_id)}")
+            if category_id:
+                update_values.append(f"category_id = {int(category_id)}")
+            if model_year:
+                update_values.append(f"model_year = {int(model_year)}")
+            if list_price:
+                update_values.append(f"list_price = {float(list_price)}")
+            if len(update_values) == 0:
+                return jsonify({"message": "No se proporcionaron datos para actualizar"}), 400
+
+            query = "UPDATE production.products SET " + ", ".join(update_values) + " WHERE product_id = %s"
+
+            params = product_id,
+
+            DatabaseConnection.execute_query(query, params)
+            
+            return {"message": "Producto actualizado exitosamente"}, 200
+        except Exception as e:
+            return {"error": str(e)}, 500
         finally:
             DatabaseConnection.close_connection()
 

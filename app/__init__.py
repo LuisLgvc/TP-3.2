@@ -34,7 +34,7 @@ def ejercicios_mysql():
                 return {"msg": "No se encontro el producto"}, 404
         except Exception as e:
             error_message = f"Error: {str(e)}"
-            return {'Error': error_message}, 500
+            return {'Error': error_message}, 400
         finally:
             DatabaseConnection.close_connection()
 
@@ -67,7 +67,7 @@ def ejercicios_mysql():
                 return {"Mensaje": "No se encontraron coincidencias"}, 404
         except Exception as e:
             error_message = str(e)
-            return {'Error': error_message}, 500
+            return {'Error': error_message}, 400
         finally:
             DatabaseConnection.close_connection()
 
@@ -86,9 +86,9 @@ def ejercicios_mysql():
             params = (product_name, brand_id, category_id, model_year, list_price)
             DatabaseConnection.execute_query(query, params)
 
-            return {}, 201
+            return '{ }', 201
         except:
-            return {'Error': 'Ha ocurrido un error'}
+            return {'Error': 'Ha ocurrido un error'}, 400
         finally:
             DatabaseConnection.close_connection()
 
@@ -122,9 +122,24 @@ def ejercicios_mysql():
 
             DatabaseConnection.execute_query(query, params)
             
-            return {"message": "Producto actualizado exitosamente"}, 200
+            return '{ }', 200
         except Exception as e:
-            return {"error": str(e)}, 500
+            return {"error": str(e)}, 400
+        finally:
+            DatabaseConnection.close_connection()
+
+    @app.route('/delproduct/<int:product_id>')
+    def delete_product(product_id):
+        try:
+            query = "DELETE FROM production.products WHERE product_id = %s;"
+
+            params = product_id,
+        
+            DatabaseConnection.execute_query(query, params)
+
+            return '{ }', 204
+        except Exception as e:
+            return {'Error': str(e)}, 400
         finally:
             DatabaseConnection.close_connection()
 

@@ -2,7 +2,7 @@
 
 Se recomienda el uso de la extension "Thunder Client" de Visual Studio Code para el correcto funcionamiento de los metodos GET, POST, PUT y DELETE ya que cuenta con una pestaña de seleccion para los metodos que sean necesarios usar
 
-![Captura de pantalla 2023-08-25 233625](https://github.com/LuisLgvc/TP-3.2/assets/113144443/0d2aa0ff-fcd0-4d98-bd4b-86420c84ed7f)
+![Captura-Thunder-Client](https://github.com/LuisLgvc/TP-3.2/assets/113144443/0d2aa0ff-fcd0-4d98-bd4b-86420c84ed7f)
 
 Ejercicio 2.1
 http://127.0.0.1:5000/product/1
